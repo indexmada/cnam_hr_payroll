@@ -1,0 +1,6 @@
+<odoo>
+  <data>
+        <menuitem name="Export" id="cnam_hr_payroll_export_main_menu" parent="hr_payroll.menu_hr_payroll_root"/>
+        <menuitem name="Fiche de paie" id="export_xlsx_fiche_paie" parent="cnam_hr_payroll_export_main_menu" action=""/>
+  </data>
+</odoo>

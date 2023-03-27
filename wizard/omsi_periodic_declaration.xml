@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="hr_payroll_cnaps_form" model="ir.ui.view">
+        <field name="name">Déclaration Périodique OMSI</field>
+        <field name="model">omsi.periodic.declaration</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <!--<field name="trimester"/>
+                    <field name="year"/>-->
+                    <field name="quarter"/>
+                    <field name="annees"/>
+                </group>
+                <footer>
+                    <button name="generate_report" type="object" string="Exporter" class="btn-primary"/>
+                    <button string="Annuler" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <act_window id="act_omsi_periodic_dec" name="Déclaration OMSI" res_model="omsi.periodic.declaration" view_mode="form"
+                target="new"/>
+
+    <menuitem id="periodic_declaration_omsi"
+              name="OMSI"
+              parent="mg_payroll_core.periodic_declaration"
+              sequence="2"
+              action="act_omsi_periodic_dec"/>
+</odoo>
