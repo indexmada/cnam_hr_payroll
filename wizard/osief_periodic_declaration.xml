@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
-    <record id="hr_payroll_omsi_form" model="ir.ui.view">
-        <field name="name">Déclaration Périodique OMSI</field>
-        <field name="model">omsi.periodic.declaration</field>
+    <record id="hr_payroll_osief_form" model="ir.ui.view">
+        <field name="name">Déclaration Périodique OSIEF</field>
+        <field name="model">osief.periodic.declaration</field>
         <field name="arch" type="xml">
             <form>
                 <group>
@@ -21,12 +21,12 @@
     </record>
 
 
-    <act_window id="act_omsi_periodic_dec" name="Déclaration OMSI" res_model="omsi.periodic.declaration" view_mode="form"
+    <act_window id="act_osief_periodic_dec" name="Déclaration OSIEF" res_model="osief.periodic.declaration" view_mode="form"
                 target="new"/>
 
-    <menuitem id="periodic_declaration_omsi"
-              name="OMSI"
+    <menuitem id="periodic_declaration_osief"
+              name="OSIEF"
               parent="mg_payroll_core.periodic_declaration"
               sequence="2"
-              action="act_omsi_periodic_dec"/>
+              action="act_osief_periodic_dec"/>
 </odoo>

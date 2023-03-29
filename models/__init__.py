@@ -1,3 +1,4 @@
 # -*- coding: utf-8 -*-
 
-from . import models,omsi_periodic_declaration
+from . import omsi_periodic_declaration
+from . import osief_periodic_declaration

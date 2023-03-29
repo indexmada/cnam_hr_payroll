@@ -26,6 +26,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'wizard/omsi_periodic_declaration.xml',
+        'wizard/osief_periodic_declaration.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
