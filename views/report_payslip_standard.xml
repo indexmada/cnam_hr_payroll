@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="report_hr_payslip_standard_document" name="Fiche de paie standard" inherit_id="mg_payroll_core.report_hr_payslip_standard_document">
+        <xpath expr="//table[hasclass('standard-payslip-table')]" position="replace">
+            <table class="standard-payslip-table">
+                <tr>
+                    <th><b>RUBIRIQUES</b></th><th><b>NATURES</b></th><th><b>MONTANTS</b></th>
+                </tr>
+                <tr>
+                    <td style="width: 60% !important">Salaire du mois</td>
+                    <td style="width: 20% !important">Imposable</td>
+                    <td class="text-right" style="width: 20% !important"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBA').total"/></td>
+                </tr>
+                <tr>
+                    <td>Heures Supplémentaires</td>
+                    <td>Imposable</td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'HS').total"/></td>
+                </tr>
+                <tr>
+                    <td>Primes</td>
+                    <td>Imposable</td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'PR').total"/></td>
+                </tr>
+                <tr>
+                    <td>Gratification</td>
+                    <td>Imposable</td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'GRT').total"/></td>
+                </tr>
+                <tr>
+                    <td>Divers</td>
+                    <td>Imposable</td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'DVRNET').total"/></td>
+                </tr>
+                <tr>
+                    <td>Avantages en Nature</td>
+                    <td>Imposable</td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'AVNTR').total"/></td>
+                </tr>
+                <tr>
+                    <td>Allocations Familiales et Autres Indemnités</td>
+                    <td>Non Imposable</td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'AF').total"/></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="border:solid 1px black"><b>REMUNERATION BRUTE</b></td>
+                    <td class="text-right" style="border:solid 1px black"><b><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total"/></b></td>
+                </tr>
+
+            </table>
+            <br/>
+            <table class="standard-payslip-table">
+                <tr>
+                    <th>RUBIRIQUES</th><th>BASES</th><th>TAUX</th><th>MONTANTS</th>
+                </tr>
+                <tr>
+                    <td>CnaPS</td>
+                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total"/></td>
+                    <t t-set="cnaps" t-value="o.line_ids.filtered(lambda line: line.code == 'CNAPS').total"/>
+                    <td>1%</td><td><span t-esc="cnaps"/></td>
+                </tr>
+                <tr>
+                    <td>OSTIE</td>
+                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total"/></td>
+                    <t t-set="ostie" t-value="o.line_ids.filtered(lambda line: line.code == 'OSTIE').total or o.line_ids.filtered(lambda line: line.code == 'OSIEF').total or o.line_ids.filtered(lambda line: line.code == 'OMSI').total or 0"/>
+                    <td>1%</td><td><span t-esc="ostie"/></td>
+                </tr>
+                <tr>
+                    <td>IRSA</td>
+                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total"/></td>
+                    <t t-set="irsa" t-value="o.line_ids.filtered(lambda line: line.code == 'IRSA').total"/>
+                    <td></td><td><span t-esc="irsa"/></td>
+                </tr>
+                <tr>
+                    <td>Avances et Accomptes</td>
+                    <td></td><td></td>
+                    <t t-set="avs" t-value="o.line_ids.filtered(lambda line: line.code == 'AVS').total"/>
+                    <td><span t-esc="avs"/></td>
+                </tr>
+                <tr>
+                    <td>Avantages en Nature</td>
+                    <td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td>Autres Retenues</td>
+                    <td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="border:solid 1px black"><b>TOTAL RETENUES</b></td>
+                    <td style="border:solid 1px black"><t t-esc="cnaps + ostie + irsa + avs"/></td>
+                </tr>
+            </table>
+            <br/>
+            <table class="standard-payslip-table">
+                <tr>
+                    <td style="border:solid 1px black"><b>SALAIRE NET A PAYER</b></td>
+                    <td class="text-right" style="border:solid 1px black"><b>
+                        <t t-set="netapayer" t-value="o.line_ids.filtered(lambda line: line.code == 'NETAPAYER').total"/>
+                        <span t-esc="netapayer" /></b>
+                    </td>
+                </tr>
+            </table>
+        </xpath>
+        <xpath expr="//div[@style='font-size:13px;']/div[1]/div/span" position="replace">
+            <span style="font-size:15px; font-weight:bold;"><u>BULLETIN DE SALAIRE: </u><span t-field="o.date_from" /> au <span t-field="o.date_to" /></span>
+        </xpath>
+        <xpath expr="//div[@style='font-size:13px;']/div[3]/div" position="replace">
+            <div class="col-12">
+                <b>Fonction :</b> <span t-field="o.contract_id.job_id"/><br/>
+                <b>Matricule :</b> <span t-field="o.employee_id.matricule"/> | 
+                <b>N° CNAPS :</b> <span t-field="o.employee_id.num_cnaps"/><br/>
+                <b>Catégorie Professionnelle:</b> <span t-field="o.employee_id.classification"/>
+            </div>
+        </xpath>
+
+    </template>
+</odoo>

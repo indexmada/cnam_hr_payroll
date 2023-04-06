@@ -27,6 +27,8 @@
         # 'security/ir.model.access.csv',
         'wizard/omsi_periodic_declaration.xml',
         'wizard/osief_periodic_declaration.xml',
+        'data/hr_payroll_data.xml',
+        'views/report_payslip_standard.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

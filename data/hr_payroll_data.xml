@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TODO add noupdate once its done -->
+<odoo>
+    <data>
+        <!-- HR Structure Payroll -->
+        <record id="structure_base_malagasy" model="hr.payroll.structure">
+            <field name="name">Structure Salariale Malagasy(CNAM)</field>
+            <field name="type_id" ref="mg_payroll_core.structure_type_employee"/>
+            <field name="regular_pay" eval="True"/>
+            <field name="country_id" eval="False"/>
+        </record>
+
+
+       <!-- Hr Salary Rule -->
+        <record id="hr_rule_SBA" model="hr.salary.rule">
+            <field name="name">Salaire du mois</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">SBA</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+if payslip.half_wage:
+    result = payslip.nb_days * contract.wage / payslip.nb_day_base
+else:
+    result = contract.amount_by_hour * payslip.attendance_hour_count
+            </field>
+        </record>
+
+        <record id="hr_rule_HALFSBA" model="hr.salary.rule">
+            <field name="name">Demi salaire</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">HALFSBA</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+result = payslip.half_wage
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = payslip.nb_day_leave * contract.wage / 2 / payslip.nb_day_base
+            </field>
+        </record>
+
+        <record id="hr_rule_HS" model="hr.salary.rule">
+            <field name="name">Heures supplémentaires</field>
+            <field name="sequence" eval="2"/>
+            <field name="code">HS</field>
+            <field name="category_id" ref="mg_payroll_core.INFO"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+res= payslip.amount_add_hours
+nb = res % 100
+result = (int(res/100) + 1) * 100 if nb > 0 else res
+            </field>
+        </record>
+
+        <record id="hr_rule_DVR" model="hr.salary.rule">
+            <field name="name">Divers ou prime</field>
+            <field name="sequence" eval="3"/>
+            <field name="code">DVR</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.DVR.amount if inputs.DVR and inputs.DVR.amount else 0
+            </field>
+        </record>
+
+        <record id="hr_rule_repas" model="hr.salary.rule">
+            <field name="name">Repas</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">REPAS</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.REPAS.amount if inputs.REPAS and inputs.REPAS.amount else 0
+            </field>
+        </record>
+
+        <record id="hr_rule_PPN" model="hr.salary.rule">
+            <field name="name">PPN</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">PPN</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.PPN.amount if inputs.PPN and inputs.PPN.amount else 0
+            </field>
+        </record>
+
+        <record id="hr_rule_PR" model="hr.salary.rule">
+            <field name="name">Prime</field>
+            <field name="sequence" eval="5"/>
+            <field name="code">PR</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (inputs.PR.amount if inputs.PR and inputs.PR.amount else 0)</field>
+        </record>
+
+
+        <record id="hr_rule_SBR" model="hr.salary.rule">
+            <field name="name">Rémunération brut</field>
+            <field name="sequence" eval="10"/>
+            <field name="code">SBR</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.BASIC</field>
+        </record>
+
+        <record id="hr_rule_CNAPS" model="hr.salary.rule">
+            <field name="name">Retenue CNAPS</field>
+            <field name="sequence" eval="13"/>
+            <field name="code">CNAPS</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = (SBR*employee.company_id.taux_cnaps/100 if SBR &lt; employee.company_id.plafond_cnaps else employee.company_id.plafond_cnaps*employee.company_id.taux_cnaps/100 )
+            </field>
+        </record>
+
+        <record id="hr_rule_CNAPS_PAT" model="hr.salary.rule">
+            <field name="name">Charges patronales CNAPS</field>
+            <field name="sequence" eval="50"/>
+            <field name="code">CNAPS_PAT</field>
+            <field name="category_id" ref="mg_payroll_core.PATRONAL"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+result = (SBR*employee.company_id.taux_cnaps_patr/100 if SBR &lt; employee.company_id.plafond_cnaps else employee.company_id.plafond_cnaps*employee.company_id.taux_cnaps_patr/100 )
+            </field>
+        </record>
+
+        <record id="hr_payroll_rules_FMFP" model="hr.salary.rule">
+            <field name="category_id" ref="mg_payroll_core.PATRONAL"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="name">FMFP</field>
+            <field name="code">FMFP_PAT</field>
+            <field name="sequence" eval="50"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+if SBR > employee.company_id.plafond_cnaps:
+    result = employee.company_id.plafond_cnaps * employee.company_id.seuil_fmfp / 100
+else:
+    result = SBR * employee.company_id.seuil_fmfp / 100
+            </field>
+            <field name="appears_on_payslip" eval="True"/>
+            <field name="note">Formation FMFP</field>
+        </record>
+
+        <record id="hr_rule_SI" model="hr.salary.rule">
+            <field name="name">Base imposable</field>
+            <field name="sequence" eval="16"/>
+            <field name="code">SI</field>
+            <field name="category_id" ref="mg_payroll_core.INFO"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+res = SBR - categories.DED
+result = int(res/100) * 100
+            </field>
+        </record>
+
+        <record id="hr_rule_IRSA" model="hr.salary.rule">
+            <field name="name">Retenue IRSA</field>
+            <field name="sequence" eval="18"/>
+            <field name="code">IRSA</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+res = 0
+if SI &lt;= 350000:
+    res = employee.company_id.percpt_minimum
+
+if SI &gt; 350000:
+    if SI &lt;= 400000:
+        res += ((SI - 350001) * 5 / 100)
+    else:
+        res += 2499.95
+
+if SI &gt; 400000:
+    if SI &lt;= 500000:
+        res += ((SI - 400001) * 10 / 100)
+    else:
+        res += 9999.90
+
+if SI &gt; 500000:
+    if SI &lt;= 600000:
+        res += ((SI - 500001) * 15 / 100)
+    else:
+        res += 14999.85
+
+if SI &gt; 600000:
+    res += ((SI - 600001) * 20 / 100)
+
+abat_irsa = employee.company_id.abat_irsa * employee.nombre_enfant_cnaps
+res -= abat_irsa
+
+if res &lt; employee.company_id.percpt_minimum:
+    res = employee.company_id.percpt_minimum
+result = res
+            </field>
+        </record>
+
+        <record id="hr_rule_RD" model="hr.salary.rule">
+            <field name="name">Retenues diverses</field>
+            <field name="sequence" eval="19"/>
+            <field name="code">RD</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (inputs.RD.amount if inputs.RD and inputs.RD.amount else 0 )</field>
+        </record>
+
+        <record id="hr_rule_MAD" model="hr.salary.rule">
+            <field name="name">Total des deductions</field>
+            <field name="sequence" eval="20"/>
+            <field name="code">MAD</field>
+            <field name="category_id" ref="mg_payroll_core.INFO"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.DED</field>
+        </record>
+
+        <record id="hr_rule_NET" model="hr.salary.rule">
+            <field name="name">Montant de la paie</field>
+            <field name="sequence" eval="30"/>
+            <field name="code">NET</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+formula = SBR - MAD
+entier = ('%.2f' % formula).split('.')[0]
+decimal = ('%.2f' % formula).split('.')[1]
+res = 0
+if int(decimal) &lt; 10:
+    a = 0
+elif int(decimal) &lt; 30:
+    a = 20
+elif int(decimal) &lt; 50:
+    a = 40
+elif int(decimal) &lt; 70:
+    a = 60
+elif int(decimal) &lt; 90:
+    a = 80
+else:
+    res = int(-(-formula // 1))
+
+if res:
+    result = res
+elif formula and not res:
+    result = formula and float('%s.%s' % (entier, a)) or formula
+result = result
+            </field>
+        </record>
+
+        <record id="hr_rule_AF" model="hr.salary.rule">
+            <field name="name">Allocation Familiales et Autres Indemnités</field>
+            <field name="sequence" eval="35"/>
+            <field name="code">AF</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = employee.nombre_enfant_cnaps * employee.company_id.amount_allocation</field>
+        </record>
+
+        <record id="hr_rule_DVRNET" model="hr.salary.rule">
+            <field name="name">Divers</field>
+            <field name="sequence" eval="36"/>
+            <field name="code">DVRNET</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (inputs.DVRNET.amount if inputs.DVRNET and inputs.DVRNET.amount else 0 )</field>
+        </record>
+
+        <record id="hr_rule_ILF" model="hr.salary.rule">
+            <field name="name">Indemnité lié à la fonction</field>
+            <field name="sequence" eval="36"/>
+            <field name="code">ILF</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.ilf</field>
+        </record>
+
+        <record id="hr_rule_ILG" model="hr.salary.rule">
+            <field name="name">Indemnité de logement</field>
+            <field name="sequence" eval="36"/>
+            <field name="code">ILG</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.ilg</field>
+        </record>
+
+        <record id="hr_rule_AVS" model="hr.salary.rule">
+            <field name="name">Avance et accompte</field>
+            <field name="sequence" eval="35"/>
+            <field name="code">AVS</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.AVS.amount if inputs.AVS and inputs.AVS.amount else 0</field>
+        </record>
+
+
+        <record id='hr_rule_total_PATR' model="hr.salary.rule">
+            <field name="name">Total charges patronales</field>
+            <field name="sequence" eval="60"/>
+            <field name="code">TOTAL_PATRONAL</field>
+            <field name="category_id" ref="mg_payroll_core.INFO"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.PATRONAL
+            </field>
+        </record>
+
+
+        <record id='hr_rule_total_cout_person' model="hr.salary.rule">
+            <field name="name">Coût total du personnel</field>
+            <field name="sequence" eval="70"/>
+            <field name="code">TOTAL_COUT</field>
+            <field name="category_id" ref="mg_payroll_core.INFO"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.PATRONAL + NET + categories.ALW
+            </field>
+        </record>
+
+        <record id="hr_rule_NETAPAYER" model="hr.salary.rule">
+            <field name="name">Net à payer</field>
+            <field name="sequence" eval="80"/>
+            <field name="code">NETAPAYER</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+res = NET + categories.ALW - AVS
+nb = res % 100
+result = (int(res/100) + 1) * 100 if nb > 0 else res
+            </field>
+        </record>
+
+        <record id="hr_rule_CP" model="hr.salary.rule">
+            <field name="name">Congé payé</field>
+            <field name="sequence" eval="9"/>
+            <field name="code">CP</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.stc
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.average_gross * payslip.paied_leave / payslip.nb_day_base
+            </field>
+        </record>
+
+        <record id="hr_rule_PRS" model="hr.salary.rule">
+            <field name="name">Préavis</field>
+            <field name="sequence" eval="9"/>
+            <field name="code">PRS</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.stc and payslip.preavis > 0
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.average_gross_prv * payslip.preavis / payslip.nb_day_base
+            </field>
+        </record>
+
+        <record id="hr_rule_PRSDEM" model="hr.salary.rule">
+            <field name="name">Préavis</field>
+            <field name="sequence" eval="18"/>
+            <field name="code">PRSDEM</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.stc and payslip.preavis &lt; 0
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.average_gross_prv * abs(payslip.preavis)
+            </field>
+        </record>
+
+        <record id="hr_rule_PRSDEM" model="hr.salary.rule">
+            <field name="name">Préavis</field>
+            <field name="sequence" eval="18"/>
+            <field name="code">PRSDEM0</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.stc and not payslip.preavis
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 0
+            </field>
+        </record>
+
+
+        <record id="hr_rule_OMSI" model="hr.salary.rule">
+            <field name="name">Retenue OMSI</field>
+            <field name="sequence" eval="12"/>
+            <field name="code">OMSI</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.hr_health_id.code == 'OMSI'
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (SBR*contract.hr_health_id.taux_emp/100 if SBR &lt; 150000.0 else 150000.0*contract.hr_health_id.taux_emp/100 )
+            </field>
+        </record>
+
+        <record id="hr_rule_OSIEF" model="hr.salary.rule">
+            <field name="name">Retenue OSIEF</field>
+            <field name="sequence" eval="12"/>
+            <field name="code">OSIEF</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.hr_health_id.code == 'OSIEF'
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (SBR*contract.hr_health_id.taux_emp/100 if SBR &lt; 200000.0 else 200000.0*contract.hr_health_id.taux_emp/100 )
+            </field>
+        </record>
+        <record id="hr_rule_grt" model="hr.salary.rule">
+            <field name="name">Gratification</field>
+            <field name="sequence" eval="12"/>
+            <field name="code">GRT</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 0
+            </field>
+        </record>
+        <record id="hr_rule_avnt" model="hr.salary.rule">
+            <field name="name">Avantages en Nature</field>
+            <field name="sequence" eval="12"/>
+            <field name="code">AVNTR</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 0
+            </field>
+        </record>
+
+    </data>
+</odoo>
