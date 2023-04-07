@@ -29,6 +29,7 @@
         'wizard/osief_periodic_declaration.xml',
         'data/hr_payroll_data.xml',
         'views/report_payslip_standard.xml',
+        'views/views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

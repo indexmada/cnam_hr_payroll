@@ -460,7 +460,7 @@ result = (int(res/100) + 1) * 100 if nb > 0 else res
             <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = 0
+            <field name="amount_python_compute">result = inputs.GRT.amount if inputs.GRT and inputs.GRT.amount else 0
             </field>
         </record>
         <record id="hr_rule_avnt" model="hr.salary.rule">
@@ -471,7 +471,7 @@ result = (int(res/100) + 1) * 100 if nb > 0 else res
             <field name="struct_id" ref="cnam_hr_payroll.structure_base_malagasy"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = 0
+            <field name="amount_python_compute">result = inputs.AVNTR.amount if inputs.AVNTR and inputs.AVNTR.amount else 0
             </field>
         </record>
 

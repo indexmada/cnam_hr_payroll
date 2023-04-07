@@ -1,6 +1,26 @@
 <odoo>
   <data>
-        <menuitem name="Export" id="cnam_hr_payroll_export_main_menu" parent="hr_payroll.menu_hr_payroll_root"/>
-        <menuitem name="Fiche de paie" id="export_xlsx_fiche_paie" parent="cnam_hr_payroll_export_main_menu" action=""/>
+
+    <record id="hr_payroll_od_form" model="ir.ui.view">
+        <field name="name">od.report</field>
+        <field name="model">od.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="start_date" options="{'format': 'DD/MM/YYYY'}"/>
+                    <field name="end_date" options="{'format': 'DD/MM/YYYY'}"/>
+                    <field name="month_year" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="generate_od_report" type="object" string="Exporter" class="btn-primary"/>
+                    <button string="Annuler" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="act_od" name="OD Reporting" res_model="od.report" view_mode="form"
+                target="new"/>
+    <menuitem name="OD" id="od" parent="hr_payroll.menu_hr_payroll_report" action="act_od"/>
   </data>
 </odoo>
