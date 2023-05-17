@@ -3,6 +3,9 @@
 
     <template id="report_hr_payslip_standard_document" name="Fiche de paie standard" inherit_id="mg_payroll_core.report_hr_payslip_standard_document">
         <xpath expr="//table[hasclass('standard-payslip-table')]" position="replace">
+            <div t-if="is_copie" style="position: absolute; width:100%; float:left; font-size:115px; text-align: center; opacity:.6; transform: rotate(45deg); -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg);">
+                COPIE
+            </div>
             <table class="standard-payslip-table">
                 <tr>
                     <th><b>RUBIRIQUES</b></th><th><b>NATURES</b></th><th><b>MONTANTS</b></th>
@@ -115,4 +118,48 @@
         </xpath>
 
     </template>
+    <template id="report_hr_payslip_standard_pages_inherit" inherit_id="mg_payroll_core.report_hr_payslip_standard_pages">
+        <xpath expr="//div[hasclass('page')]" position="replace">
+            <div class="page">
+                <div class="row">
+                    <div class="col-8 offset-2">
+                        <t t-set="is_copie" t-value="0"/>
+                        <t t-call="mg_payroll_core.report_hr_payslip_standard_document"/>
+                    </div>
+                </div>
+            </div>
+            <p style="page-break-before:always;"> </p>
+            <div class="page">
+                <div class="row">
+                    <div class="col-8 offset-2">
+                        <t t-set="is_copie" t-value="1"/>
+                        <t t-call="mg_payroll_core.report_hr_payslip_standard_document"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="payslip_standard_layout_inherit" inherit_id="mg_payroll_core.payslip_standard_layout">
+        <xpath expr="//div[hasclass('header')]/div" position="replace">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 80px;"/>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('footer')]/div" position="replace">
+            <div class="row">
+                <div class="col-12">
+                    <t t-call="mg_payroll_core.payslip_standard_footer" />
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="report_hr_payslip_standard" inherit_id="mg_payroll_core.report_hr_payslip_standard">
+        <xpath expr="//t[@t-set='data_report_landscape']" position="replace">
+            <t t-set="data_report_landscape" t-value="False"/>
+        </xpath>
+    </template>
+
 </odoo>
