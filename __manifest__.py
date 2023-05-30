@@ -24,7 +24,7 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'wizard/omsi_periodic_declaration.xml',
         'wizard/osief_periodic_declaration.xml',
         'data/hr_payroll_data.xml',

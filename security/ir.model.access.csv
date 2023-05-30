@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_cnam_hr_payroll_cnam_hr_payroll,cnam_hr_payroll.cnam_hr_payroll,model_cnam_hr_payroll_cnam_hr_payroll,base.group_user,1,1,1,1
+access_od_report,od.report,model_od_report,base.group_user,1,1,1,1
