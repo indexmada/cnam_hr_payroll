@@ -565,7 +565,7 @@ class ExportReportOsiefController(http.Controller):
             d2 = date(int(y), 12, 31)
             date_paiement = '31 Janvier'
 
-        payslips = request.env['hr.payslip'].sudo().search([('date_from', '>=', d1),('date_to', '<=', d2),('state', 'in', ['done', 'paid']), ('contract_id.hr_health_id.code','=', 'OSIEF')], order="employee_id ASC")
+        payslips = request.env['hr.payslip'].sudo().search([('date_from', '>=', d1),('date_to', '<=', d2),('state', 'in', ['done', 'paid', 'verify']), ('contract_id.hr_health_id.code','in', ['OSIEF', 'osief'])], order="employee_id ASC")
 
         line = 28
         sal_1 = 0

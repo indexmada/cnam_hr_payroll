@@ -422,7 +422,7 @@ class ExportReportOmsiController(http.Controller):
             d1 = date(int(y), 10, 1)
             d2 = date(int(y), 12, 31)
 
-        payslips = request.env['hr.payslip'].sudo().search([('date_from', '>=', d1),('date_to', '<=', d2),('state', 'in', ['done', 'paid']), ('contract_id.hr_health_id.code','=', 'OMSI')], order="employee_id ASC")
+        payslips = request.env['hr.payslip'].sudo().search([('date_from', '>=', d1),('date_to', '<=', d2),('state', 'in', ['done', 'paid', 'verify']), ('contract_id.hr_health_id.code','in', ['OMSI','omsi'])], order="employee_id ASC")
 
         nb = 1
         line = 14
