@@ -163,7 +163,7 @@ class ExportOdReportController(http.Controller):
         # 
         date_from = datetime.strptime(start_date, '%d-%m-%Y')
         date_to = datetime.strptime(end_date, '%d-%m-%Y')
-        move_ids = request.env['hr.payslip'].sudo().search([('date_from', '>=', date_from),('date_to', '<=', date_to), ('state', 'in', ['done', 'paid'])]).mapped('move_id')
+        move_ids = request.env['hr.payslip'].sudo().search([('date_from', '>=', date_from),('date_to', '<=', date_to), ('state', 'in', ['done', 'paid', 'verify'])]).mapped('move_id')
         move_line_ids = move_ids.mapped('line_ids')
 
 
@@ -175,13 +175,13 @@ class ExportOdReportController(http.Controller):
             cell = 'A'+str(row)
             worksheet_ost.write(cell, line.account_id.code, cell_10_center_lr)
             cell = 'B'+str(row)
-            worksheet_ost.write(cell, line.name, cell_10_center_l)
+            worksheet_ost.write(cell, line.name or 'paie mois de', cell_10_center_l)
             cell = 'C'+str(row)
             worksheet_ost.write(cell, month_year, cell_10_center_r)
 
             if line.debit:
                 cell = 'D'+str(row)
-                worksheet_ost.write(cell, line.debit, cell_10_center_lr)
+                worksheet_ost.write(cell, line.account_id.name, cell_10_center_lr)
                 cell = 'E'+str(row)
                 worksheet_ost.write(cell, '', cell_10_center_lr)
                 sum_debit += line.debit
@@ -190,7 +190,7 @@ class ExportOdReportController(http.Controller):
                 cell = 'D'+str(row)
                 worksheet_ost.write(cell, '', cell_10_center_lr)
                 cell = 'E'+str(row)
-                worksheet_ost.write(cell, line.credit, cell_10_center_lr)
+                worksheet_ost.write(cell, line.account_id.name, cell_10_center_lr)
                 sum_credit += line.credit
 
             row += 1
@@ -223,8 +223,8 @@ class ExportOdReportController(http.Controller):
         worksheet.set_column('A:A', 8)
         worksheet.set_column('B:B', 15)
         worksheet.set_column('C:C', 8)
-        worksheet.set_column('D:D', 15)
-        worksheet.set_column('E:E', 15)
+        worksheet.set_column('D:D', 22)
+        worksheet.set_column('E:E', 22)
 
     def today_string(self):
         d = date.today()

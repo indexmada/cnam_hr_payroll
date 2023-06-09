@@ -142,8 +142,8 @@
     <template id="payslip_standard_layout_inherit" inherit_id="mg_payroll_core.payslip_standard_layout">
         <xpath expr="//div[hasclass('header')]/div" position="replace">
             <div class="row">
-                <div class="col-12 text-center">
-                    <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 80px;"/>
+                <div class="col-12 text-left">
+                    <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 120px;"/>
                 </div>
             </div>
         </xpath>
