@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','hr_payroll'],
+    'depends': ['base','hr','hr_payroll', 'mg_payroll_core'],
 
     # always loaded
     'data': [
@@ -30,6 +30,7 @@
         'data/hr_payroll_data.xml',
         'views/report_payslip_standard.xml',
         'views/views.xml',
+        'views/irsa_wizard_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

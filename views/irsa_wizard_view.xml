@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+        <record id="hr_payroll_irsa_form_cnam" model="ir.ui.view">
+            <field name="name">reportexcel_irsa.cnam</field>
+            <field name="model">irsa.reportexcel</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="mois"/>
+                        <field name="annees"/>
+                    </group>
+                    <footer>
+                        <button name="generateIrsa_excel_cnam" type="object" string="Exporter" class="btn-primary"/>
+                        <button string="Annuler" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_menuwizard_irsa_cnam" 
+                name="Etat IRSA" 
+                res_model="irsa.reportexcel" 
+                view_mode="form"
+                target="new"
+                view_id="hr_payroll_irsa_form_cnam"/>
+
+        <menuitem id="cnam_periodic_declaration_irsa"
+                  name="IRSA CNAM"
+                  parent="mg_payroll_core.periodic_declaration"
+                  sequence="1"
+                  action="action_menuwizard_irsa_cnam"/>
+
+    </data>
+</odoo>
