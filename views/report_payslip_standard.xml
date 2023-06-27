@@ -18,37 +18,37 @@
                 <tr>
                     <td>Heures Supplémentaires</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'HS').total"/></td>
+                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'HS').total)"/></td>
                 </tr>
                 <tr>
                     <td>Primes</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'PR').total"/></td>
+                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'PR').total)"/></td>
                 </tr>
                 <tr>
                     <td>Gratification</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'GRT').total"/></td>
+                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'GRT').total)"/></td>
                 </tr>
                 <tr>
                     <td>Divers</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'DVRNET').total"/></td>
+                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'DVRNET').total)"/></td>
                 </tr>
                 <tr>
                     <td>Avantages en Nature</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'AVNTR').total"/></td>
+                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'AVNTR').total)"/></td>
                 </tr>
                 <tr>
                     <td>Allocations Familiales et Autres Indemnités</td>
                     <td>Non Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'AF').total"/></td>
+                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'AF').total)"/></td>
                 </tr>
 
                 <tr>
                     <td colspan="2" style="border:solid 1px black"><b>REMUNERATION BRUTE</b></td>
-                    <td class="text-right" style="border:solid 1px black"><b><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total"/></b></td>
+                    <td class="text-right" style="border:solid 1px black"><b><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></b></td>
                 </tr>
 
             </table>
@@ -59,27 +59,27 @@
                 </tr>
                 <tr>
                     <td>CnaPS</td>
-                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total"/></td>
+                    <td><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></td>
                     <t t-set="cnaps" t-value="o.line_ids.filtered(lambda line: line.code == 'CNAPS').total"/>
-                    <td>1%</td><td><span t-esc="cnaps"/></td>
+                    <td>1%</td><td><span t-esc="'{:,}' .format(cnaps)"/></td>
                 </tr>
                 <tr>
                     <td>OSTIE</td>
-                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total"/></td>
+                    <td><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></td>
                     <t t-set="ostie" t-value="o.line_ids.filtered(lambda line: line.code == 'OSTIE').total or o.line_ids.filtered(lambda line: line.code == 'OSIEF').total or o.line_ids.filtered(lambda line: line.code == 'OMSI').total or 0"/>
-                    <td>1%</td><td><span t-esc="ostie"/></td>
+                    <td>1%</td><td><span t-esc="'{:,}' .format(ostie)"/></td>
                 </tr>
                 <tr>
                     <td>IRSA</td>
-                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total"/></td>
+                    <td><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></td>
                     <t t-set="irsa" t-value="o.line_ids.filtered(lambda line: line.code == 'IRSA').total"/>
-                    <td></td><td><span t-esc="irsa"/></td>
+                    <td></td><td><span t-esc="'{:,}' .format(irsa)"/></td>
                 </tr>
                 <tr>
                     <td>Avances et Accomptes</td>
                     <td></td><td></td>
                     <t t-set="avs" t-value="o.line_ids.filtered(lambda line: line.code == 'AVS').total"/>
-                    <td><span t-esc="avs"/></td>
+                    <td><span t-esc="'{:,}' .format(avs)"/></td>
                 </tr>
                 <tr>
                     <td>Avantages en Nature</td>
@@ -91,7 +91,7 @@
                 </tr>
                 <tr>
                     <td colspan="3" style="border:solid 1px black"><b>TOTAL RETENUES</b></td>
-                    <td style="border:solid 1px black"><t t-esc="cnaps + ostie + irsa + avs"/></td>
+                    <td style="border:solid 1px black"><t t-esc="'{:,}' .format(cnaps + ostie + irsa + avs)"/></td>
                 </tr>
             </table>
             <br/>
@@ -100,7 +100,7 @@
                     <td style="border:solid 1px black"><b>SALAIRE NET A PAYER</b></td>
                     <td class="text-right" style="border:solid 1px black"><b>
                         <t t-set="netapayer" t-value="o.line_ids.filtered(lambda line: line.code == 'NETAPAYER').total"/>
-                        <span t-esc="netapayer" /></b>
+                        <span t-esc="'{:,}' .format(netapayer)" /></b>
                     </td>
                 </tr>
             </table>
