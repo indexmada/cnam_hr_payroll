@@ -64,7 +64,9 @@
                     <td>1%</td><td><span t-esc="'{:,}' .format(cnaps)"/></td>
                 </tr>
                 <tr>
-                    <td>OSTIE</td>
+                    <td t-if="o.line_ids.filtered(lambda line: line.code == 'OSTIE').total &gt; 0">OSTIE</td>
+                    <td t-if="o.line_ids.filtered(lambda line: line.code == 'OSIEF').total &gt; 0">OSIEF</td>
+                    <td t-if="o.line_ids.filtered(lambda line: line.code == 'OMSI').total &gt; 0">OMSI</td>
                     <td><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></td>
                     <t t-set="ostie" t-value="o.line_ids.filtered(lambda line: line.code == 'OSTIE').total or o.line_ids.filtered(lambda line: line.code == 'OSIEF').total or o.line_ids.filtered(lambda line: line.code == 'OMSI').total or 0"/>
                     <td>1%</td><td><span t-esc="'{:,}' .format(ostie)"/></td>
