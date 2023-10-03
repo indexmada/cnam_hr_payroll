@@ -181,7 +181,7 @@ class ExportOdReportController(http.Controller):
 
             if line.debit:
                 cell = 'D'+str(row)
-                worksheet_ost.write(cell, line.account_id.name, cell_10_center_lr)
+                worksheet_ost.write(cell, line.debit, cell_10_center_lr)
                 cell = 'E'+str(row)
                 worksheet_ost.write(cell, '', cell_10_center_lr)
                 sum_debit += line.debit
@@ -190,7 +190,7 @@ class ExportOdReportController(http.Controller):
                 cell = 'D'+str(row)
                 worksheet_ost.write(cell, '', cell_10_center_lr)
                 cell = 'E'+str(row)
-                worksheet_ost.write(cell, line.account_id.name, cell_10_center_lr)
+                worksheet_ost.write(cell, line.credit, cell_10_center_lr)
                 sum_credit += line.credit
 
             row += 1
