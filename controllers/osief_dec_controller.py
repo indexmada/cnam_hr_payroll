@@ -596,7 +596,7 @@ class ExportReportOsiefController(http.Controller):
                     cell = 'D'+str(line)
                     worksheet_ost.write(cell, str(d2), cell_10_center)
 
-                    worksheet_ost.write('E'+str(line), sbr, cust_12)
+                    worksheet_ost.write('E'+str(line), '{:,}' .format(sbr), cust_12)
 
                     # Vide
                     cell = 'F'+str(line)
@@ -617,10 +617,10 @@ class ExportReportOsiefController(http.Controller):
                 else:
                     if month_trim == 2:
                         sal_2 += sbr
-                        worksheet_ost.write('H'+str(line), sbr, cust_12)
+                        worksheet_ost.write('H'+str(line), '{:,}' .format(sbr), cust_12)
                     elif month_trim == 3:
                         sal_3 += sbr
-                        worksheet_ost.write('K'+str(line), sbr, cust_12)
+                        worksheet_ost.write('K'+str(line), '{:,}' .format(sbr), cust_12)
 
 
 
@@ -670,11 +670,11 @@ class ExportReportOsiefController(http.Controller):
 
         # Sal_1
         cell = 'E'+str(line)
-        worksheet_ost.write(cell, sal_1, cell_right_12)
+        worksheet_ost.write(cell, '{:,}' .format(sal_1), cell_right_12)
         cell = 'E'+str(line+1)
         worksheet_ost.write(cell, '', cell_right_12)
         cell = 'E'+str(line+2)
-        worksheet_ost.write(cell, sal_1, cell_right_12)
+        worksheet_ost.write(cell, '{:,}' .format(sal_1), cell_right_12)
 
         # Avantage
         cell = 'F'+str(line)
@@ -694,11 +694,11 @@ class ExportReportOsiefController(http.Controller):
 
         # Sal_2
         cell = 'H'+str(line)
-        worksheet_ost.write(cell, sal_2, cell_right_12)
+        worksheet_ost.write(cell, '{:,}' .format(sal_2), cell_right_12)
         cell = 'H'+str(line+1)
         worksheet_ost.write(cell, '', cell_right_12)
         cell = 'H'+str(line+2)
-        worksheet_ost.write(cell, sal_2, cell_right_12)
+        worksheet_ost.write(cell, '{:,}' .format(sal_2), cell_right_12)
 
         # Avantage
         cell = 'I'+str(line)
@@ -718,11 +718,11 @@ class ExportReportOsiefController(http.Controller):
 
         # Sal_3
         cell = 'K'+str(line)
-        worksheet_ost.write(cell, sal_3, cell_right_12)
+        worksheet_ost.write(cell, '{:,}' .format(sal_3), cell_right_12)
         cell = 'K'+str(line+1)
         worksheet_ost.write(cell, '', cell_right_12)
         cell = 'K'+str(line+2)
-        worksheet_ost.write(cell, sal_3, cell_right_12)
+        worksheet_ost.write(cell, '{:,}' .format(sal_3), cell_right_12)
 
         # Avantage
         cell = 'L'+str(line)
@@ -752,7 +752,7 @@ class ExportReportOsiefController(http.Controller):
         cell = 'A'+str(line)+':M'+str(line)
         total_sal = sal_1 + sal_2 + sal_3
         cotisation = total_sal * 8/100
-        val = 'Cotisation :……'+str(cotisation)+'  Ariary                        Total Salaire……'+str(total_sal)+' Ariary'
+        val = 'Cotisation :……'+'{:,}' .format(cotisation)+'  Ariary                        Total Salaire……'+'{:,}' .format(total_sal)+' Ariary'
         worksheet_ost.merge_range(cell, val,left_rigth_top_12)
         worksheet_ost.write('N'+str(line), '',cell_10)
 
@@ -764,7 +764,7 @@ class ExportReportOsiefController(http.Controller):
 
         line += 1
         cell = 'A'+str(line)
-        val = 'NET A PAYER : (chiffres)…'+str(cotisation)+' Ariary…… ; '
+        val = 'NET A PAYER : (chiffres)…'+'{:,}' .format(cotisation)+' Ariary…… ; '
         worksheet_ost.write(cell, val, left_12_bold)
 
         line +=1
