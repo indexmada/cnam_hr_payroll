@@ -70,7 +70,7 @@
                     <td t-if="o.line_ids.filtered(lambda line: line.code in ost)">OSTIE</td>
                     <td t-if="o.line_ids.filtered(lambda line: line.code in osief)">OSIEF</td>
                     <td t-if="o.line_ids.filtered(lambda line: line.code in omsi)">OMSI</td>
-                    <td><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></td>
+                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                     <t t-set="ostie" t-value="o.line_ids.filtered(lambda line: line.code in ost).total or o.line_ids.filtered(lambda line: line.code in osief).total or o.line_ids.filtered(lambda line: line.code in omsi).total or 0"/>
                     <td>1%</td><td><span t-esc="ostie" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
