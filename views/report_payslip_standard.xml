@@ -63,12 +63,15 @@
                     <t t-set="cnaps" t-value="o.line_ids.filtered(lambda line: line.code == 'CNAPS').total"/>
                     <td>1%</td><td><span t-esc="'{:,}' .format(cnaps)"/></td>
                 </tr>
-                <tr>
-                    <td t-if="o.line_ids.filtered(lambda line: line.code == 'OSTIE').total &gt; 0">OSTIE</td>
-                    <td t-if="o.line_ids.filtered(lambda line: line.code == 'OSIEF').total &gt; 0">OSIEF</td>
-                    <td t-if="o.line_ids.filtered(lambda line: line.code == 'OMSI').total &gt; 0">OMSI</td>
+                <t t-set="osief" t-value="['OSIEF', 'osief', 'Osief']"/>
+                <t t-set="ost" t-value="['OSTIE', 'ostie', 'Ostie']"/>
+                <t t-set="omsi" t-value="['OMSI', 'omsi', 'Omsi']"/>
+                <tr t-if="o.line_ids.filtered(lambda line: line.code in osief+ost+omsi)">
+                    <td t-if="o.line_ids.filtered(lambda line: line.code in ost)">OSTIE</td>
+                    <td t-if="o.line_ids.filtered(lambda line: line.code in osief)">OSIEF</td>
+                    <td t-if="o.line_ids.filtered(lambda line: line.code in omsi)">OMSI</td>
                     <td><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></td>
-                    <t t-set="ostie" t-value="o.line_ids.filtered(lambda line: line.code == 'OSTIE').total or o.line_ids.filtered(lambda line: line.code == 'OSIEF').total or o.line_ids.filtered(lambda line: line.code == 'OMSI').total or 0"/>
+                    <t t-set="ostie" t-value="o.line_ids.filtered(lambda line: line.code in ost).total or o.line_ids.filtered(lambda line: line.code in osief).total or o.line_ids.filtered(lambda line: line.code in omsi).total or 0"/>
                     <td>1%</td><td><span t-esc="'{:,}' .format(ostie)"/></td>
                 </tr>
                 <tr>
