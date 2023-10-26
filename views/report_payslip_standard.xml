@@ -8,47 +8,47 @@
             </div>
             <table class="standard-payslip-table">
                 <tr>
-                    <th><b>RUBIRIQUES</b></th><th><b>NATURES</b></th><th><b>MONTANTS</b></th>
+                    <th><b>RUBIRIQUES</b></th><th><b>NATURES</b></th><th class="text-right"><b>MONTANTS</b></th>
                 </tr>
                 <tr>
                     <td style="width: 60% !important">Salaire du mois</td>
                     <td style="width: 20% !important">Imposable</td>
-                    <td class="text-right" style="width: 20% !important"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBA').total"/></td>
+                    <td class="text-right" style="width: 20% !important"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBA').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Heures Supplémentaires</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'HS').total)"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'HS').total"  t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Primes</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'PR').total)"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'PR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Gratification</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'GRT').total)"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'GRT').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Divers</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'DVRNET').total)"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'DVRNET').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Avantages en Nature</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'AVNTR').total)"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'AVNTR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Allocations Familiales et Autres Indemnités</td>
                     <td>Non Imposable</td>
-                    <td class="text-right"><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'AF').total)"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'AF').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
 
                 <tr>
                     <td colspan="2" style="border:solid 1px black"><b>REMUNERATION BRUTE</b></td>
-                    <td class="text-right" style="border:solid 1px black"><b><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></b></td>
+                    <td class="text-right" style="border:solid 1px black"><b><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></b></td>
                 </tr>
 
             </table>
@@ -59,9 +59,9 @@
                 </tr>
                 <tr>
                     <td>CnaPS</td>
-                    <td><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></td>
+                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                     <t t-set="cnaps" t-value="o.line_ids.filtered(lambda line: line.code == 'CNAPS').total"/>
-                    <td>1%</td><td><span t-esc="'{:,}' .format(cnaps)"/></td>
+                    <td>1%</td><td><span t-esc="cnaps" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <t t-set="osief" t-value="['OSIEF', 'osief', 'Osief']"/>
                 <t t-set="ost" t-value="['OSTIE', 'ostie', 'Ostie']"/>
@@ -72,19 +72,19 @@
                     <td t-if="o.line_ids.filtered(lambda line: line.code in omsi)">OMSI</td>
                     <td><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></td>
                     <t t-set="ostie" t-value="o.line_ids.filtered(lambda line: line.code in ost).total or o.line_ids.filtered(lambda line: line.code in osief).total or o.line_ids.filtered(lambda line: line.code in omsi).total or 0"/>
-                    <td>1%</td><td><span t-esc="'{:,}' .format(ostie)"/></td>
+                    <td>1%</td><td><span t-esc="ostie" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>IRSA</td>
-                    <td><span t-esc="'{:,}' .format(o.line_ids.filtered(lambda line: line.code == 'SBR').total)"/></td>
+                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                     <t t-set="irsa" t-value="o.line_ids.filtered(lambda line: line.code == 'IRSA').total"/>
-                    <td></td><td><span t-esc="'{:,}' .format(irsa)"/></td>
+                    <td></td><td><span t-esc="irsa" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Avances et Accomptes</td>
                     <td></td><td></td>
                     <t t-set="avs" t-value="o.line_ids.filtered(lambda line: line.code == 'AVS').total"/>
-                    <td><span t-esc="'{:,}' .format(avs)"/></td>
+                    <td><span t-esc="avs" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Avantages en Nature</td>
@@ -96,7 +96,7 @@
                 </tr>
                 <tr>
                     <td colspan="3" style="border:solid 1px black"><b>TOTAL RETENUES</b></td>
-                    <td style="border:solid 1px black"><t t-esc="'{:,}' .format(cnaps + ostie + irsa + avs)"/></td>
+                    <td style="border:solid 1px black"><t t-esc="cnaps + ostie + irsa + avs" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
             </table>
             <br/>
@@ -105,7 +105,7 @@
                     <td style="border:solid 1px black"><b>SALAIRE NET A PAYER</b></td>
                     <td class="text-right" style="border:solid 1px black"><b>
                         <t t-set="netapayer" t-value="o.line_ids.filtered(lambda line: line.code == 'NETAPAYER').total"/>
-                        <span t-esc="'{:,}' .format(netapayer)" /></b>
+                        <span t-esc="netapayer" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}" /></b>
                     </td>
                 </tr>
             </table>
