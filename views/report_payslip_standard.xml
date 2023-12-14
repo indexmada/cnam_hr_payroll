@@ -67,12 +67,24 @@
                 <t t-set="ost" t-value="['OSTIE', 'ostie', 'Ostie']"/>
                 <t t-set="omsi" t-value="['OMSI', 'omsi', 'Omsi']"/>
                 <tr t-if="o.line_ids.filtered(lambda line: line.code in osief+ost+omsi)">
-                    <td t-if="o.line_ids.filtered(lambda line: line.code in ost)">OSTIE</td>
-                    <td t-if="o.line_ids.filtered(lambda line: line.code in osief)">OSIEF</td>
-                    <td t-if="o.line_ids.filtered(lambda line: line.code in omsi)">OMSI</td>
+                    <td t-if="o.line_ids.filtered(lambda line: line.code in ost)">
+                        OSTIE
+                        <t t-set="val" t-value="ost"/>
+                    </td>
+                    <td t-if="o.line_ids.filtered(lambda line: line.code in osief)">
+                        OSIEF
+                        <t t-set="val" t-value="osief"/>
+                    </td>
+                    <td t-if="o.line_ids.filtered(lambda line: line.code in omsi)">
+                        OMSI
+                        <t t-set="val" t-value="omsi"/>
+                    </td>
                     <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                     <t t-set="ostie" t-value="o.line_ids.filtered(lambda line: line.code in ost).total or o.line_ids.filtered(lambda line: line.code in osief).total or o.line_ids.filtered(lambda line: line.code in omsi).total or 0"/>
-                    <td>1%</td><td><span t-esc="ostie" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                    <td>
+                        <t t-set="percent" t-value="env['hr.health.organization'].sudo().search([('code', 'in', val)], limit=1)"/>
+                        <t t-esc="round(percent.taux_emp) if percent else '1%'"/>%
+                    </td><td><span t-esc="ostie" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>IRSA</td>
