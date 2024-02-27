@@ -83,8 +83,17 @@
                     <t t-set="ostie" t-value="o.line_ids.filtered(lambda line: line.code in ost).total or o.line_ids.filtered(lambda line: line.code in osief).total or o.line_ids.filtered(lambda line: line.code in omsi).total or 0"/>
                     <td>
                         <t t-set="percent" t-value="env['hr.health.organization'].sudo().search([('code', 'in', val)], limit=1)"/>
-                        <t t-esc="round(percent.taux_emp) if percent else '1%'"/>%
+                        <t t-esc="percent.taux_emp if percent else '1%'"/>%
                     </td><td><span t-esc="ostie" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                </tr>
+                <tr t-if="o.line_ids.filtered(lambda line: line.code == 'OSTIE_PAT'">
+                    <td>OSTIE PAT</td>
+                    <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                    <td>
+                        <t t-set="val" t-value="['OSTIE', 'ostie', 'Ostie']"/>
+                        <t t-set="percent" t-value="env['hr.health.organization'].sudo().search([('code', 'in', val)], limit=1)"/>
+                        <t t-esc="percent.taux_pat if percent else '1%'"/>%
+                    </td><td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'OSTIE_PAT').total or 0" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>IRSA</td>
