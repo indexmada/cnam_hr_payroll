@@ -86,7 +86,7 @@
                         <t t-esc="percent.taux_emp if percent else '1%'"/>%
                     </td><td><span t-esc="ostie" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
-                <tr t-if="o.line_ids.filtered(lambda line: line.code == 'OSTIE_PAT'">
+                <tr t-if="o.line_ids.filtered(lambda line: line.code == 'OSTIE_PAT')">
                     <td>OSTIE PAT</td>
                     <td><span t-esc="o.line_ids.filtered(lambda line: line.code == 'SBR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                     <td>
