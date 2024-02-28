@@ -64,7 +64,7 @@ class StcReportControllers(http.Controller):
         self.style(worksheet_ost)
 
         logo_image = io.BytesIO(base64.b64decode(request.env.company.logo))
-        worksheet_ost.insert_image('A1', "image.png", {'image_data': logo_image,'x_scale': 1.60,'y_scale':1.60})
+        worksheet_ost.insert_image('A1', "image.png", {'image_data': logo_image,'x_scale': 1.30,'y_scale':1.30})
 
         worksheet_ost.write("A10", "Maison des produits 6ème Etage-67ha", left_12)
         worksheet_ost.write("A11", "Antananarivo 101", left_12)
@@ -180,6 +180,6 @@ class StcReportControllers(http.Controller):
         worksheet_ost.write("B63", "Jocelyn RASOANAIVO", center_12_bold)
 
     def style(self, worksheet):
-        worksheet.set_column('A:A', 33)
-        worksheet.set_column('B:B', 18)
+        worksheet.set_column('A:A', 35)
+        worksheet.set_column('B:B', 20)
         worksheet.set_column("C:M", 8)
