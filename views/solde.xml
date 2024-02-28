@@ -1,0 +1,23 @@
+<odoo>
+	<data>
+    <record id="stc_form" model="ir.ui.view">
+        <field name="name">stc.report.form</field>
+        <field name="model">stc.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="employee_id"/>
+                    <field name="contract_id" domain="[('employee_id', '=', employee_id)]"/>
+                </group>
+                <footer>
+                    <button name="generate_stc_report" type="object" string="Exporter" class="btn-primary"/>
+                    <button string="Annuler" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+		<act_window id="act_stc" name="Solde de tout compte" res_model="stc.report" view_mode="form"
+                target="new"/>
+		<menuitem name="Solde de tout compte" id="stc" parent="hr_payroll.menu_hr_payroll_report" action="act_stc"/>
+	</data>
+</odoo>

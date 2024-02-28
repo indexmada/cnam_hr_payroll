@@ -31,6 +31,7 @@
         'views/report_payslip_standard.xml',
         'views/views.xml',
         'views/irsa_wizard_view.xml',
+        'views/solde.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

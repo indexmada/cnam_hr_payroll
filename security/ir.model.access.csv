@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_od_report,od.report,model_od_report,base.group_user,1,1,1,1
+access_stc_report,stc.report,model_stc_report,base.group_user,1,1,1,1
