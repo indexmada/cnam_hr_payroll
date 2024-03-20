@@ -143,9 +143,9 @@ class StcReportControllers(http.Controller):
         worksheet_ost.write("B42",cnaps, center_12_bold)
 
         worksheet_ost.write("A43", "OSTIE 1% ou OSIEF 2% ou OMSI 1,5%", left_12)
-        ostie = payslip_id.line_ids.filtered(lambda line: line.code == 'OSTIE').total if payslip_id else 0
-        osief = payslip_id.line_ids.filtered(lambda line: line.code == 'OSIEF').total if payslip_id else 0
-        omsi = payslip_id.line_ids.filtered(lambda line: line.code == 'OMSI').total if payslip_id else 0
+        ostie = payslip_id.line_ids.filtered(lambda line: line.code in ['OSTIE', 'ostie']).total if payslip_id else 0
+        osief = payslip_id.line_ids.filtered(lambda line: line.code in ['OSIEF', 'osief']).total if payslip_id else 0
+        omsi = payslip_id.line_ids.filtered(lambda line: line.code in ['OMSI', 'omsi']).total if payslip_id else 0
 
         ost = ostie or osief or omsi
 
