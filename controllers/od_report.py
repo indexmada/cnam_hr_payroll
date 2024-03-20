@@ -166,32 +166,46 @@ class ExportOdReportController(http.Controller):
         move_ids = request.env['hr.payslip'].sudo().search([('date_from', '>=', date_from),('date_to', '<=', date_to), ('state', 'in', ['done', 'paid', 'verify'])]).mapped('move_id')
         move_line_ids = move_ids.mapped('line_ids')
 
-
+        move_line_tab = []
+        line_name_tab = []
+        for line in move_line_ids:
+            if line.account_id.code not in line_name_tab:
+                line_name_tab.append(line.account_id.code)
+                move_line_tab.append({
+                    "code": line.account_id.code,
+                    "name": line.name,
+                    "debit": line.debit or 0,
+                    "credit": line.credit or 0,
+                    })
+            else:
+                index = line_name_tab.index(line.account_id.code)
+                move_line_tab[index]["debit"] += line.debit or 0
+                move_line_tab[index]["credit"] += line.credit or 0
 
         row = 8
         sum_debit = 0
         sum_credit = 0
-        for line in move_line_ids:
+        for line in move_line_tab:
             cell = 'A'+str(row)
-            worksheet_ost.write(cell, line.account_id.code, cell_10_center_lr)
+            worksheet_ost.write(cell, line['code'], cell_10_center_lr)
             cell = 'B'+str(row)
-            worksheet_ost.write(cell, line.name or 'paie mois de', cell_10_center_l)
+            worksheet_ost.write(cell, line['name'] or 'paie mois de', cell_10_center_l)
             cell = 'C'+str(row)
             worksheet_ost.write(cell, month_year, cell_10_center_r)
 
-            if line.debit:
+            if line['debit']:
                 cell = 'D'+str(row)
-                worksheet_ost.write(cell, '{:,}' .format(line.debit), cell_10_center_lr)
+                worksheet_ost.write(cell, '{:,}' .format(line['debit']), cell_10_center_lr)
                 cell = 'E'+str(row)
                 worksheet_ost.write(cell, '', cell_10_center_lr)
-                sum_debit += line.debit
+                sum_debit += line['debit']
 
-            elif line.credit:
+            elif line['credit']:
                 cell = 'D'+str(row)
                 worksheet_ost.write(cell, '', cell_10_center_lr)
                 cell = 'E'+str(row)
-                worksheet_ost.write(cell, '{:,}' .format(line.credit), cell_10_center_lr)
-                sum_credit += line.credit
+                worksheet_ost.write(cell, '{:,}' .format(line['credit']), cell_10_center_lr)
+                sum_credit += line['credit']
 
             row += 1
 
