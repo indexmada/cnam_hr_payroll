@@ -101,7 +101,8 @@ class StcReportControllers(http.Controller):
         sba = payslip_id.line_ids.filtered(lambda line: line.code == 'SBA').total if payslip_id else contract.wage
         nb_jours = contract.date_end.day
         amount_a = sba * nb_jours /30
-        worksheet_ost.write("B25", amount_a, center_12_bold)
+        worksheet_ost.write("B25", str(sba)+' x '+str(nb_jours), center_12_bold)
+        worksheet_ost.write("B26", "30", center_12)
 
         # Indemnités Diverses
         worksheet_ost.write("A28", "Indemnités Diverses", left_12)
@@ -127,7 +128,8 @@ class StcReportControllers(http.Controller):
         sbr = payslip_id.line_ids.filtered(lambda line: line.code == 'SBR').total if payslip_id else contract.wage
 
         amount_c = sbr * solde_conge / 30
-        worksheet_ost.write("B35", amount_c, center_12_bold)
+        worksheet_ost.write("B35", str(sbr)+' x '+str(solde_conge), center_12_bold)
+        worksheet_ost.write("A36", "30", center_12)
 
         worksheet_ost.write("A38", "TOTAL DES ELEMENTS POSITIFS ", left_12_bold)
         # Total des éléments positifs
