@@ -129,7 +129,7 @@ class StcReportControllers(http.Controller):
 
         amount_c = sbr * solde_conge / 30
         worksheet_ost.write("B35", str(sbr)+' x '+str(solde_conge), center_12_bold)
-        worksheet_ost.write("A36", "30", center_12)
+        worksheet_ost.write("B36", "30", center_12)
 
         worksheet_ost.write("A38", "TOTAL DES ELEMENTS POSITIFS ", left_12_bold)
         # Total des éléments positifs
