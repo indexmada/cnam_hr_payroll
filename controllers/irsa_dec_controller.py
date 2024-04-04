@@ -124,9 +124,9 @@ class ExportReportIrsaControllerCNAM(http.Controller):
         preavis = payslip.preavis if payslip.stc else 0
         gross = sum(payslip.line_ids.filtered(lambda x: x.code == 'SBR').mapped('total'))
         cnaps_emp = sum(payslip.line_ids.filtered(lambda x: x.code == 'CNAPS').mapped('total'))
-        omsi_emp = sum(payslip.line_ids.filtered(lambda x: x.code == 'OMSI').mapped('total'))
-        ostie_emp = sum(payslip.line_ids.filtered(lambda x: x.code == 'OSTIE').mapped('total'))
-        osief_emp = sum(payslip.line_ids.filtered(lambda x: x.code == 'OSIEF').mapped('total'))
+        omsi_emp = sum(payslip.line_ids.filtered(lambda x: x.code in ['OMSI', 'omsi']).mapped('total'))
+        ostie_emp = sum(payslip.line_ids.filtered(lambda x: x.code in ['OSTIE', 'ostie']).mapped('total'))
+        osief_emp = sum(payslip.line_ids.filtered(lambda x: x.code in ['OSIEF', 'osief']).mapped('total'))
         net = sum(payslip.line_ids.filtered(lambda x: x.code == 'NETAPAYER').mapped('total'))
         mimpo = sum(payslip.line_ids.filtered(lambda x: x.code == 'SI').mapped('total'))
         enfant = payslip.employee_id.nombre_enfant_cnaps * payslip.company_id.abat_irsa
