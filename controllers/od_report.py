@@ -196,7 +196,7 @@ class ExportOdReportController(http.Controller):
             if line['debit']:
                 cell = 'D'+str(row)
                 db = round(line['debit'], 2)
-                worksheet_ost.write(cell, '{:,}' .format(db), cell_10_center_lr)
+                worksheet_ost.write(cell, '{:,.2f}' .format(db), cell_10_center_lr)
                 cell = 'E'+str(row)
                 worksheet_ost.write(cell, '', cell_10_center_lr)
                 sum_debit += line['debit']
@@ -206,7 +206,7 @@ class ExportOdReportController(http.Controller):
                 worksheet_ost.write(cell, '', cell_10_center_lr)
                 cell = 'E'+str(row)
                 cd = round(line['credit'], 2)
-                worksheet_ost.write(cell, '{:,}' .format(cd), cell_10_center_lr)
+                worksheet_ost.write(cell, '{:,.2f}' .format(cd), cell_10_center_lr)
                 sum_credit += line['credit']
 
             row += 1
@@ -223,8 +223,8 @@ class ExportOdReportController(http.Controller):
         worksheet_ost.write('C'+str(row), 'Totaux', g_10_right_b)
         sd = round(sum_debit, 2)
         sc = round(sum_credit, 2)
-        worksheet_ost.write('D'+str(row), '{:,}' .format(sd), cell_g_10_center)
-        worksheet_ost.write('E'+str(row), '{:,}' .format(sc), cell_g_10_center)
+        worksheet_ost.write('D'+str(row), '{:,.2f}' .format(sd), cell_g_10_center)
+        worksheet_ost.write('E'+str(row), '{:,.2f}' .format(sc), cell_g_10_center)
 
         row += 3
         worksheet_ost.write('B'+str(row), 'Antananarivo, le '+self.today_string(), simple_10_left)

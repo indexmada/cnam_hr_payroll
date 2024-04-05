@@ -101,14 +101,14 @@ class StcReportControllers(http.Controller):
         sba = payslip_id.line_ids.filtered(lambda line: line.code == 'SBA').total if payslip_id else contract.wage
         nb_jours = contract.date_end.day
         amount_a = sba * nb_jours /30
-        worksheet_ost.write("B25", str(sba)+' x '+str(nb_jours), center_12_bold)
+        worksheet_ost.write("B25", '{:,.2f}' .format(sba)+' x '+str(nb_jours), center_12_bold)
         worksheet_ost.write("B26", "30", center_12)
 
         # Indemnités Diverses
         worksheet_ost.write("A28", "Indemnités Diverses", left_12)
 
         amount_b = payslip_id.line_ids.filtered(lambda line: line.code == 'DVR').total if payslip_id else 0
-        worksheet_ost.write("B28", amount_b, center_12_bold)
+        worksheet_ost.write("B28", '{:,.2f}' .format(amount_b), center_12_bold)
 
         worksheet_ost.write("A30", "////", left_12)
 
@@ -128,13 +128,13 @@ class StcReportControllers(http.Controller):
         sbr = payslip_id.line_ids.filtered(lambda line: line.code == 'SBR').total if payslip_id else contract.wage
 
         amount_c = sbr * solde_conge / 30
-        worksheet_ost.write("B35", str(sbr)+' x '+str(solde_conge), center_12_bold)
+        worksheet_ost.write("B35", '{:,.2f}' .format(sbr)+' x '+str(solde_conge), center_12_bold)
         worksheet_ost.write("B36", "30", center_12)
 
         worksheet_ost.write("A38", "TOTAL DES ELEMENTS POSITIFS ", left_12_bold)
         # Total des éléments positifs
         el_positifs = amount_a + amount_b + amount_c
-        worksheet_ost.write("B38", el_positifs, center_12_bold)
+        worksheet_ost.write("B38", '{:,.2f}' .format(el_positifs), center_12_bold)
 
         # ELEMENTS NEGATIFS
 
@@ -142,7 +142,7 @@ class StcReportControllers(http.Controller):
 
         worksheet_ost.write("A42", "CNaPS 1%", left_12)
         cnaps = payslip_id.line_ids.filtered(lambda line: line.code == 'CNAPS').total if payslip_id else 0
-        worksheet_ost.write("B42",cnaps, center_12_bold)
+        worksheet_ost.write("B42",'{:,.2f}' .format(cnaps), center_12_bold)
 
         worksheet_ost.write("A43", "OSTIE 1% ou OSIEF 2% ou OMSI 1,5%", left_12)
         ostie = payslip_id.line_ids.filtered(lambda line: line.code in ['OSTIE', 'ostie']).total if payslip_id else 0
@@ -151,24 +151,24 @@ class StcReportControllers(http.Controller):
 
         ost = ostie or osief or omsi
 
-        worksheet_ost.write("B43", str(ost), center_12_bold)
+        worksheet_ost.write("B43", '{:,.2f}' .format(ost), center_12_bold)
 
         worksheet_ost.write("A44", "IRSA", left_12)
         irsa = payslip_id.line_ids.filtered(lambda line: line.code == 'IRSA').total if payslip_id else 0
-        worksheet_ost.write("B44", irsa, center_12_bold)
+        worksheet_ost.write("B44", '{:,.2f}' .format(irsa), center_12_bold)
 
         worksheet_ost.write("A45", "AVANCE ET ACOMPTE", left_12)
         avs = payslip_id.line_ids.filtered(lambda line: line.code == 'AVS').total if payslip_id else 0
-        worksheet_ost.write("B45", avs, center_12_bold)
+        worksheet_ost.write("B45", '{:,.2f}' .format(avs), center_12_bold)
 
         worksheet_ost.write("A47", "TOTAL DES ELEMENTS NEGATIFS ", left_12_bold)
 
         el_negatifs = cnaps + ost + irsa + avs
-        worksheet_ost.write("B47", el_negatifs, center_12_bold)
+        worksheet_ost.write("B47", '{:,.2f}' .format(el_negatifs), center_12_bold)
 
         worksheet_ost.write("A50", "NET A PAYER ", left_12_bold)
         net_a_payer = abs(el_positifs - el_negatifs)
-        worksheet_ost.write("B50", net_a_payer, center_12_bold)
+        worksheet_ost.write("B50", '{:,.2f}' .format(net_a_payer), center_12_bold)
 
         # Montant en lettre
         amount_text = payslip_id.currency_id.with_context(lang='fr_FR').amount_to_text(net_a_payer)

@@ -453,30 +453,30 @@ class ExportReportOmsiController(http.Controller):
                     worksheet_ost.write(cell, d2.strftime('%d/%m/%Y'), cell_8)
 
                     cell = 'E'+str(line)
-                    worksheet_ost.write(cell, '{:,}' .format(sbr), cell_8)
+                    worksheet_ost.write(cell, '{:,.2f}' .format(sbr), cell_8)
                 else:
                     if month_trim == 2:
                         sum_sbr += sbr
                         cell = 'F'+str(line)
-                        worksheet_ost.write(cell, '{:,}' .format(sbr), cell_8)
+                        worksheet_ost.write(cell, '{:,.2f}' .format(sbr), cell_8)
                     elif month_trim == 3:
                         sum_sbr += sbr
                         cell = 'G'+str(line)
-                        worksheet_ost.write(cell, '{:,}' .format(sbr), cell_8)
+                        worksheet_ost.write(cell, '{:,.2f}' .format(sbr), cell_8)
 
                 cell = 'H'+str(line)
-                worksheet_ost.write(cell, '{:,}' .format(sum_sbr), cell_8)
+                worksheet_ost.write(cell, '{:,.2f}' .format(sum_sbr), cell_8)
 
                 cell = 'I'+str(line)
                 patronal = sum_sbr * 5.5 /100
-                worksheet_ost.write(cell, '{:,}' .format(patronal), cell_8)
+                worksheet_ost.write(cell, '{:,.2f}' .format(patronal), cell_8)
 
                 cell = 'J'+str(line)
                 salarial = sum_sbr * 1.5 /100
-                worksheet_ost.write(cell, '{:,}' .format(salarial), cell_8)
+                worksheet_ost.write(cell, '{:,.2f}' .format(salarial), cell_8)
                 cell = 'K'+str(line)
                 cotisation = patronal + salarial
-                worksheet_ost.write(cell, '{:,}' .format(cotisation), cell_8)
+                worksheet_ost.write(cell, '{:,.2f}' .format(cotisation), cell_8)
 
 
 
@@ -505,7 +505,7 @@ class ExportReportOmsiController(http.Controller):
         cell = 'D'+str(line)+':E'+str(line)
         worksheet_ost.merge_range(cell, 'Montant de cotisations', cell_10)
         cell = 'F'+str(line)+':G'+str(line)
-        worksheet_ost.merge_range(cell, '{:,}' .format(sum_cotisation), cell_10)
+        worksheet_ost.merge_range(cell, '{:,.2f}' .format(sum_cotisation), cell_10)
 
         cell = 'D'+str(line+1)+':E'+str(line+1)
         worksheet_ost.merge_range(cell, 'Majoration de retard 10%', cell_10)
