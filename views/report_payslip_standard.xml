@@ -28,22 +28,22 @@
                 <tr>
                     <td>Gratification</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'GRT').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'CMSS').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Divers</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'DVRNET').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'DVR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Avantages en Nature</td>
                     <td>Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'AVNTR').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'IT').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
                 <tr>
                     <td>Allocations Familiales et Autres Indemnités</td>
                     <td>Non Imposable</td>
-                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'AF').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                    <td class="text-right"><span t-esc="o.line_ids.filtered(lambda line: line.code == 'PPN').total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
 
                 <tr>
