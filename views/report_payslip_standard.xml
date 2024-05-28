@@ -117,7 +117,7 @@
                 </tr>
                 <tr>
                     <td colspan="3" style="border:solid 1px black"><b>TOTAL RETENUES</b></td>
-                    <td style="border:solid 1px black"><t t-esc="cnaps + ostie + irsa + avs" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                    <td style="border:solid 1px black"><t t-esc="(cnaps or 0) + (ostie or 0) + (irsa or 0) + (avs or 0)" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
                 </tr>
             </table>
             <br/>
