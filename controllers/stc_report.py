@@ -94,13 +94,13 @@ class StcReportControllers(http.Controller):
             val = "Salaire du mois de "+ month_list[payslip_id.date_from.month][1] +" "+str(payslip_id.date_from.year)
         worksheet_ost.write("A23", val, left_12)
 
-        worksheet_ost.write("A25",  '{:,.2f}' .format(sba)+' x '+str(nb_jours), center_12_bold)
-        worksheet_ost.write("A26", "30", center_12)
 
         # Calcul Montant A
         sba = payslip_id.line_ids.filtered(lambda line: line.code == 'SBA').total if payslip_id else contract.wage
         nb_jours = contract.date_end.day
         amount_a = sba * nb_jours /30
+        worksheet_ost.write("A25",  '{:,.2f}' .format(sba)+' x '+str(nb_jours), center_12_bold)
+        worksheet_ost.write("A26", "30", center_12)
         worksheet_ost.write("B25", '{:,.2f}' .format(amount_a), center_12_bold)
         # worksheet_ost.write("B26", "30", center_12)
 
