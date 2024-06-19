@@ -121,13 +121,13 @@ class StcReportControllers(http.Controller):
         worksheet_ost.write("A33", "Solde de congé", left_12)
         worksheet_ost.write("B33", solde_conge, left_12)
 
-        worksheet_ost.write("A35", '{:,.2f}' .format(sbr)+' x '+str(solde_conge), center_12_bold)
-        worksheet_ost.write("A36", "30", center_12)
-
         # Montant C
         sbr = payslip_id.line_ids.filtered(lambda line: line.code == 'SBR').total if payslip_id else contract.wage
 
         amount_c = sbr * solde_conge / 30
+
+        worksheet_ost.write("A35", '{:,.2f}' .format(sbr)+' x '+str(solde_conge), center_12_bold)
+        worksheet_ost.write("A36", "30", center_12)
         worksheet_ost.write("B35", '{:,.2f}' .format(amount_c), center_12_bold)
         # worksheet_ost.write("B36", "30", center_12)
 
