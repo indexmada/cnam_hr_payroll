@@ -22,5 +22,16 @@
     <act_window id="act_od" name="OD Reporting" res_model="od.report" view_mode="form"
                 target="new"/>
     <menuitem name="OD" id="od" parent="hr_payroll.menu_hr_payroll_report" action="act_od"/>
+
+    <record id="hr_salary_rule_form" model="ir.ui.view">
+        <field name="name">salary.rule.inherit.view_form</field>
+        <field name="model">hr.salary.rule</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+        <field name="arch" type="xml">
+            <field name="appears_on_payslip" position="after">
+                <field name="display_od"/>
+            </field>
+        </field>
+    </record>
   </data>
 </odoo>

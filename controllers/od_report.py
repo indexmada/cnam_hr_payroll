@@ -163,24 +163,42 @@ class ExportOdReportController(http.Controller):
         # 
         date_from = datetime.strptime(start_date, '%d-%m-%Y')
         date_to = datetime.strptime(end_date, '%d-%m-%Y')
-        move_ids = request.env['hr.payslip'].sudo().search([('date_from', '>=', date_from),('date_to', '<=', date_to), ('state', 'in', ['done', 'paid', 'verify'])]).mapped('move_id')
+        payslips_ids = request.env['hr.payslip'].sudo().search([('date_from', '>=', date_from),('date_to', '<=', date_to), ('state', 'in', ['done', 'paid', 'verify'])])
+        move_ids = payslips_ids.mapped('move_id')
         move_line_ids = move_ids.mapped('line_ids')
 
         move_line_tab = []
         line_name_tab = []
-        for line in move_line_ids:
-            if line.account_id.code not in line_name_tab:
-                line_name_tab.append(line.account_id.code)
-                move_line_tab.append({
-                    "code": line.account_id.code,
-                    "name": line.name,
-                    "debit": line.debit or 0,
-                    "credit": line.credit or 0,
-                    })
-            else:
-                index = line_name_tab.index(line.account_id.code)
-                move_line_tab[index]["debit"] += line.debit or 0
-                move_line_tab[index]["credit"] += line.credit or 0
+        for line in payslips_ids.line_ids:
+            rule = line.salary_rule_id.account_debit or line.salary_rule_id.account_credit
+            if rule and line.salary_rule_id.display_od:
+                if line.salary_rule_id.account_debit:
+                    if line.salary_rule_id.account_debit.code not in line_name_tab:
+                        line_name_tab.append(line.salary_rule_id.account_debit.code)
+                        move_line_tab.append({
+                            "code": line.salary_rule_id.account_debit.code,
+                            "name": line.name,
+                            "debit": line.total or 0,
+                            "credit": 0,
+                            })
+                    else:
+                        index = line_name_tab.index(line.salary_rule_id.account_debit.code)
+                        move_line_tab[index]["debit"] += line.total or 0
+                        move_line_tab[index]["credit"] += 0
+
+                if line.salary_rule_id.account_credit:
+                    if line.salary_rule_id.account_credit.code not in line_name_tab:
+                        line_name_tab.append(line.salary_rule_id.account_credit.code)
+                        move_line_tab.append({
+                            "code": line.salary_rule_id.account_credit.code,
+                            "name": line.name,
+                            "debit": 0,
+                            "credit": line.total or 0,
+                            })
+                    else:
+                        index = line_name_tab.index(line.salary_rule_id.account_credit.code)
+                        move_line_tab[index]["debit"] += 0
+                        move_line_tab[index]["credit"] += line.total or 0
 
         row = 8
         sum_debit = 0
@@ -197,13 +215,15 @@ class ExportOdReportController(http.Controller):
                 cell = 'D'+str(row)
                 db = round(line['debit'], 2)
                 worksheet_ost.write(cell, '{:,.2f}' .format(db), cell_10_center_lr)
-                cell = 'E'+str(row)
-                worksheet_ost.write(cell, '', cell_10_center_lr)
+                if not line["credit"]:
+                    cell = 'E'+str(row)
+                    worksheet_ost.write(cell, '', cell_10_center_lr)
                 sum_debit += line['debit']
 
-            elif line['credit']:
-                cell = 'D'+str(row)
-                worksheet_ost.write(cell, '', cell_10_center_lr)
+            if line['credit']:
+                if not line["debit"]:
+                    cell = 'D'+str(row)
+                    worksheet_ost.write(cell, '', cell_10_center_lr)
                 cell = 'E'+str(row)
                 cd = round(line['credit'], 2)
                 worksheet_ost.write(cell, '{:,.2f}' .format(cd), cell_10_center_lr)
